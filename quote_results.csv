@@ -1,0 +1,90 @@
+Test ID,Insurer Name,Equote Number,Premium (1st Year)
+7E648CE4,Vikram Banerjee,7291FNYH,4969.34
+AE5A2909,Manish Menon,7332GEVT,2613.96
+03EB3D54,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+F0146860,Manish Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+09094C7E,Sneha Sharma,7468QRKN,910.91
+026A41A4,Vikram Banerjee,7865AHHP,4969.34
+3C44ED3D,Manish Menon,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+ADD6FDA5,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+78FE126A,Manish Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+A4A71246,Vikram Banerjee,8110MAAU,4969.34
+357B03BE,Manish Menon,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+70CC247E,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+CF09081E,Vikram Banerjee,8309PHVW,4969.34
+ADFC7EED,Manish Menon,8355KPOI,2613.96
+838F7373,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+4C7C2FD7,Manish Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+4C5DFD23,Sneha Sharma,8506YTVA,910.91
+B7DB7453,Vikram Banerjee,8604IUDL,5539.21
+760489E8,Manish Menon,8634BJVK,2954.20
+53EBA6E8,Kavya Kulkarni,8680YDOY,2035.50
+C082ADFD,Manish Kulkarni,8718LSNN,3106.82
+33728BB1,Sneha Sharma,ERROR,"Locator.fill: Target page, context or browser has been close"
+7EBC43D5,Manish Kulkarni,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+E2F7839B,Manish Kulkarni,8958MCSW,3395.14
+5C9B338C,Manish Menon,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+22EC6614,Kavya Kulkarni,9030LPOY,2035.50
+8EB75376,Manish Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+B9062246,Sneha Sharma,ERROR,"Page.wait_for_selector: Timeout 15000ms exceeded.
+Call log:
+"
+C30960F7,Manish Kulkarni,9201PTAJ,3106.82
+11644F35,Manish Menon,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+647E0825,Manish Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+3B0D179E,Manish Kulkarni,9409UKDY,3395.14
+E39154DC,Manish Menon,9445DJLJ,2568.46
+311B21F7,Kavya Kulkarni,9498VQLS,1835.38
+6DEBD18F,Manish Kulkarni,9537HMEU,3395.14
+06A9C504,Sneha Sharma,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti"
+502C5A2A,Manish Kulkarni,ERROR,"Locator.fill: Timeout 30000ms exceeded.
+Call log:
+  - waitin"
+2C4C76E2,Manish Kulkarni,ERROR,'Page' object has no attribute 'get'
+7FC14F49,Manish Menon,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+4AD3CB85,Kavya Kulkarni,ERROR,'Page' object has no attribute 'get'
+D0E3F193,Manish Kulkarni,N/A,N/A
+732BD1E0,Manish Menon,N/A,N/A
+13311328,Kavya Kulkarni,N/A,N/A
+158C987B,Manish Kulkarni,N/A,N/A
+3AA17274,Sneha Sharma,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+533E923A,Kavya Kulkarni,N/A,N/A
+5A5E4769,Manish Menon,N/A,N/A
+4564C52C,Kavya Kulkarni,ERROR,"Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigatin"
+A73B81A1,Kavya Kulkarni,3163CECA,2035.50
