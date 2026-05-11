@@ -10,3 +10,26 @@ E57E26C4,Kavya Kulkarni,5514GOVU,2035.50,15796,False
 1F9DABE6,Manish Kulkarni,5554DRKM,792.35,9004,False
 773B2A2D,Sneha Sharma,5600OYHU,1014.19,10351,False
 697523F2,Kavya Kulkarni,5749KTSY,2035.50,2036,True
+33625C21,Manish Menon,5784HIUC,1737.76,1738,True
+F38CF865,Kavya Kulkarni,5825KJHV,1840.08,2036,False
+07160E96,Manish Kulkarni,5878CGLL,792.35,866,False
+B6FEA20A,Sneha Sharma,5932VCOR,1014.19,1014,True
+76A08DBD,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti",N/A,N/A
+6036305C,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti",N/A,N/A
+E30673D0,Kavya Kulkarni,6153RYDX,2129.60,2345,False
+F6805B1C,Manish Menon,ERROR,Page.eval_on_selector: Failed to find element matching selec,N/A,N/A
+E503E264,Kavya Kulkarni,ERROR,Page.eval_on_selector: Failed to find element matching selec,N/A,N/A
+FFEE3CED,Manish Kulkarni,6237ASAB,1062.95,1148,False
+9DAE7123,Kavya Kulkarni,6328UTQK,2345.41,2345,True
+DFC1031B,Manish Menon,6358CPTM,2131.18,2131,True
+0DC6B11F,Kavya Kulkarni,ERROR,"Locator.fill: Timeout 30000ms exceeded.
+Call log:
+  - waitin",N/A,N/A
+51810955,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiti",N/A,N/A
+E4A0463B,Manish Menon,6762SPGP,2131.18,2131,True

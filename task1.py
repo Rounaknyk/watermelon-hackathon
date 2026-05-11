@@ -215,7 +215,7 @@ def run_for_user(playwright, user):
         page.get_by_text(gender, exact=True).click()
         page.get_by_text("No", exact=True).click()       # tobacco
         page.get_by_text("English", exact=True).click()  # language
-        page.get_by_text("Salaried", exact=True).click()
+        page.get_by_text(occupation, exact=True).click()
         page.get_by_text("Graduate & Above", exact=False).click()
         page.get_by_text("No", exact=True).click()       # diabetic
         page.get_by_text("Single", exact=True).click()   # marital
@@ -246,22 +246,34 @@ def run_for_user(playwright, user):
 
 
         page.get_by_text("MORE", exact=True).first.click()
-        page.get_by_role("textbox", name="Enter your custom value").fill(cover_age)
-        
-        # page.get(cover_age, exact=True).first.click()
-        # page.get_by_text(f"{cover_age} years", exact=False).first.click()
-        # page.wait_for_timeout(1000)
-        page.get_by_text("Confirm", exact=True).first.click() 
-
-        page.get_by_text("Proceed", exact=False).first.click()
-        page.wait_for_timeout(1000)
-
-        # ── Critical Illness Rider ──────────────────────
-        if rider.lower() == "yes":
-            try:
-                page.get_by_text("Critical Illness", exact=False).first.click()
+        try:
+            page.get_by_role("textbox", name="Enter your custom value").fill(cover_age)
+            page.get_by_text("Confirm", exact=True).first.click() 
+        except Exception:
+            print("  ⚠ Could not fill custom value — skipping")
+            try: 
+                page.locator(f"a[role='button']:has-text('{cover_age} years')").click()
                 page.wait_for_timeout(500)
             except Exception:
+                print("  ⚠ Could not find cover age option — skipping")
+        
+        
+        # page.wait_for_timeout(1000) 
+
+        page.get_by_text("Proceed", exact=True).first.click()
+        page.wait_for_timeout(1000)
+
+        # if rider.lower() == "yes":
+        #     page.eval_on_selector("#ci-rider input[name='riderAddButton']", "el => el.click()")
+        #     page.wait_for_timeout(500)
+        # ── Critical Illness Rider ──────────────────────
+        # if rider.lower() == "yes":
+        page.wait_for_timeout(1500)
+        try:
+            if rider.lower() == "yes":
+                page.eval_on_selector("#ci-rider input[name='riderAddButton']", "el => el.click()")
+                page.wait_for_timeout(500)
+        except Exception:
                 print("  ⚠ Could not click Critical Illness rider — skipping")
 
         try:
