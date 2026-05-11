@@ -71,7 +71,7 @@ def normalize_cover(val):
         return f"{num} Crore" if num != "1" else "1 Crore"
     if "lakh" in val or "lac" in val:
         num = re.search(r"[\d.]+", val).group()
-        return f"{num} Lakh"
+        return f"{num} Lakhs"
     return val
 
 # ── EXTRACT 1ST YEAR PREMIUM FROM PDF ───────────────────
@@ -214,13 +214,13 @@ def run_for_user(playwright, user):
         # ── STEP 2: Profile questions ───────────────────
         page.get_by_text(gender, exact=True).click()
         page.get_by_text("No", exact=True).click()       # tobacco
-        page.get_by_text("English", exact=True).click()  # language
-        page.get_by_text(occupation, exact=True).click()
+        page.get_by_text("English", exact=True).click()  # language 
+        page.get_by_text("Salaried", exact=True).click()
         page.get_by_text("Graduate & Above", exact=False).click()
         page.get_by_text("No", exact=True).click()       # diabetic
         page.get_by_text("Single", exact=True).click()   # marital
         page.get_by_text("Check Coverage", exact=True).click()
-
+ 
         # ── STEP 3: Customize plan ──────────────────────
         page.wait_for_selector("text=customize your Term Plan")
         page.wait_for_timeout(2000)

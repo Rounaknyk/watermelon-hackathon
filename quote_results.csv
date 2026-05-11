@@ -1,35 +1,10 @@
-Test ID,Insurer Name,Equote Number,Premium (1st Year)
-7AED1417,Kavya Kulkarni,5137VFMJ,2035.50
-5E16C442,Manish Menon,5162KOTX,1737.76
-9DF49A93,Kavya Kulkarni,5194OBOV,2035.50
-5D7F01BB,Manish Kulkarni,5217GIXH,865.88
-D8EC7A1E,Sneha Sharma,5259YUJT,1014.19
-2E7FF07F,Kavya Kulkarni,5432QCTV,2035.50,15796,False
-473266A3,Manish Menon,5477OLEM,1737.76,17473,False
-E57E26C4,Kavya Kulkarni,5514GOVU,2035.50,15796,False
-1F9DABE6,Manish Kulkarni,5554DRKM,792.35,9004,False
-773B2A2D,Sneha Sharma,5600OYHU,1014.19,10351,False
-697523F2,Kavya Kulkarni,5749KTSY,2035.50,2036,True
-33625C21,Manish Menon,5784HIUC,1737.76,1738,True
-F38CF865,Kavya Kulkarni,5825KJHV,1840.08,2036,False
-07160E96,Manish Kulkarni,5878CGLL,792.35,866,False
-B6FEA20A,Sneha Sharma,5932VCOR,1014.19,1014,True
-76A08DBD,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
-Call log:
-  - waiti",N/A,N/A
-6036305C,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
-Call log:
-  - waiti",N/A,N/A
-E30673D0,Kavya Kulkarni,6153RYDX,2129.60,2345,False
-F6805B1C,Manish Menon,ERROR,Page.eval_on_selector: Failed to find element matching selec,N/A,N/A
-E503E264,Kavya Kulkarni,ERROR,Page.eval_on_selector: Failed to find element matching selec,N/A,N/A
-FFEE3CED,Manish Kulkarni,6237ASAB,1062.95,1148,False
-9DAE7123,Kavya Kulkarni,6328UTQK,2345.41,2345,True
-DFC1031B,Manish Menon,6358CPTM,2131.18,2131,True
-0DC6B11F,Kavya Kulkarni,ERROR,"Locator.fill: Timeout 30000ms exceeded.
-Call log:
-  - waitin",N/A,N/A
-51810955,Kavya Kulkarni,ERROR,"Locator.click: Timeout 30000ms exceeded.
-Call log:
-  - waiti",N/A,N/A
-E4A0463B,Manish Menon,6762SPGP,2131.18,2131,True
+Test ID,Insurer Name,Equote Number,Premium (1st Year), Matched Premium
+
+383800A9,Kavya Kulkarni,7274QSGQ,2129.60,2130,True
+DC0F548D,Manish Menon,7335MQHI,2396.99,2397,True
+35CB8888,Kavya Kulkarni,7385QDNC,2345.41,2345,True
+123EFC5F,Manish Kulkarni,7433XKQD,1062.95,1063,True
+C9CC6519,Sneha Sharma,7461NNYH,1008.15,1008,True
+C7C87C03,Kavya Kulkarni,7911CXIB,2345.41,2345,True
+6994FC41,Kavya Kulkarni,8019NAPF,2129.60,2130,True
+985773F8,Manish Menon,8066QRJG,2131.18,2131,True
