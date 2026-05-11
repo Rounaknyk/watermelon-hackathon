@@ -18,7 +18,7 @@ DEFAULTS = {
     "education":  "Graduate & Above",
     "diabetic":   "No",
     "marital":    "Single",
-    "life_cover": "1 crore",
+    "life_cover": "50 Lakhs",
     "cover_age":  "60",
     "city":       "Bangalore",
 }
@@ -26,14 +26,16 @@ DEFAULTS = {
 # ── MAPPINGS (Excel value → what the site shows) ─────────
 EDUCATION_MAP = {
     "grad or above": "Graduate & Above",
-    "12th pass":     "12th Pass",
-    "10th pass":     "10th Pass",
+    "graduate & above": "Graduate & Above",
+    "12th pass":     "12",
+    "10th pass":     "10",
 }
 
 OCCUPATION_MAP = {
     "salaried":      "Salaried",
-    "self employed": "Self Employed",
-    "housewife":     "Housewife",
+    "self employed": "Self-employed/Business",
+    "self-employed": "Self-employed/Business",
+    "housewife":     "Housewife",   # no housewife option on UI — default to Salaried
 }
 
 # ── READ EXCEL ───────────────────────────────────────────
@@ -121,34 +123,6 @@ def extract_results(page, insurer_name):
         "Premium (1st Year)": premium,
     }
 
-def select_income_bracket(page, income_str: str) -> None:
-    # Convert income string to float and click the appropriate bracket
-    try:
-        income = float(income_str.replace(",", ""))
-        if income < 5:
-            page.locator("label").filter(has_text="<5").click()
-        elif 5 <= income < 7:
-            page.locator("label").filter(has_text="5 - 7").click()
-        elif 7 <= income < 10:
-            page.locator("label").filter(has_text="7 - 10").click()
-        elif 10 <= income < 20:
-            page.locator("label").filter(has_text="10 - 20").click()
-        else:
-            page.locator("label").filter(has_text=">20").click()
-    except Exception:
-        print(f"WARNING: invalid income_str '{income_str}', defaulting to '5 - 7' bracket")
-        page.locator("label").filter(has_text="5 - 7").click()
-
-def maybe_accept_premium(page) -> None:
-    try:
-        btn = page.get_by_text("Accept Premium", exact=True)
-        btn.wait_for(state="visible", timeout=5000)
-        btn.click()
-        page.wait_for_timeout(1000)
-    except Exception:
-        # Button not present – continue normal flow.
-        pass
-
 # ── MAIN FLOW PER USER ───────────────────────────────────
 def run_for_user(playwright, user):
     name       = get(user, "Full Name",     "Test User")
@@ -182,25 +156,16 @@ def run_for_user(playwright, user):
         page.get_by_role("textbox", name="Full Name*").fill(name)
         page.get_by_role("textbox", name="Date of Birth*").fill(dob)
         page.locator("#mobile").fill(mobile)
-        # Choose the correct income bracket based on the user's annual income
-        select_income_bracket(page, income)
+        page.locator("label").filter(has_text="- 7").click()
         page.get_by_role("button", name="button").click()
-
+        page.wait_for_timeout(3000)
 
         # ── STEP 2: Profile questions ───────────────────
         page.get_by_text(gender, exact=True).click()
         page.get_by_text("No", exact=True).click()       # tobacco
         page.get_by_text("English", exact=True).click()  # language
-        page.get_by_text("Salaried", exact=True).click() 
-
-        page.get_by_text("Graduate & Above", exact=True).click()
-        # if(education == "Graduate & Above"): 
-        #     page.get_by_text("Graduate & Above", exact=True).click()
-        # elif(education == "10th pass" or education == "10th Pass"):
-        #     page.get_by_text("10th Pass", exact=True).click()
-        # else:
-        #     page.get_by_text("12th Pass", exact=True).click()
-
+        page.get_by_text("Salaried", exact=True).click()
+        page.get_by_text("Graduate & Above", exact=False).click()
         page.get_by_text("No", exact=True).click()       # diabetic
         page.get_by_text("Single", exact=True).click()   # marital
         page.get_by_text("Check Coverage", exact=True).click()
@@ -210,16 +175,24 @@ def run_for_user(playwright, user):
         page.wait_for_timeout(2000)
 
         # Open life cover dropdown
-        page.get_by_text("Recommended", exact=False).first.click()
+        page.get_by_text(re.compile(r"Recommended|Market Linked Returns")).first.click()
         page.wait_for_timeout(1000)
 
         # Select life cover by partial match
-        page.locator("label, li").filter(
-            has_text=re.compile(life_cover, re.IGNORECASE)
-        ).first.click()
+        # Select life cover by partial match (with fallback to default if not found)
+        try:
+            target_cover = page.locator("label, li").filter(has_text=re.compile(life_cover, re.IGNORECASE)).first
+            target_cover.click(timeout=5000)
+        except Exception:
+            default_label = normalize_cover(DEFAULTS["life_cover"])
+            print(f"  ⚠ Life cover '{life_cover}' not found, choosing default: {default_label}")
+            page.locator("label, li").filter(has_text=re.compile(default_label, re.IGNORECASE)).first.click()
         page.wait_for_timeout(1000)
 
-        # Select cover till age
+        # # Select cover till age
+        # page.get_by_text(f"{cover_age} years", exact=False).first.click()
+        # page.wait_for_timeout(1000)
+
 
         page.get_by_text("MORE", exact=True).first.click()
         page.get_by_role("textbox", name="Enter your custom value").fill(cover_age)
@@ -240,7 +213,6 @@ def run_for_user(playwright, user):
             except Exception:
                 print("  ⚠ Could not click Critical Illness rider — skipping")
 
-        # Handle either "Skip" or "Proceed" buttons that may appear after the rider selection
         try:
             page.locator("text=/Skip|Proceed/").first.click(timeout=5000)
             page.wait_for_timeout(1000)
@@ -248,11 +220,10 @@ def run_for_user(playwright, user):
             # If neither is found, we assume the flow moved forward or the button isn't needed
             pass
 
+
         # ── STEP 3b: Eligibility details ───────────────
         page.get_by_role("textbox", name="Email Address*").fill(email)
         page.get_by_role("textbox", name="Annual Income*").fill(income)
-        page.get_by_role("textbox", name="Pincode of Current Residential Address*").click()
-        maybe_accept_premium(page)
         page.get_by_role("textbox", name="Pincode of Current Residential Address*").fill(pincode)
         page.wait_for_timeout(2000)
 
@@ -264,8 +235,8 @@ def run_for_user(playwright, user):
         page.get_by_text("Download Benefit Illustration").click()
         page.wait_for_timeout(8000)
         page.get_by_text("Proceed", exact=True).first.click()
-        page.wait_for_timeout(8000)
- 
+        page.wait_for_timeout(5000)
+
         # ── STEP 4: Extract & save ──────────────────────
         result = extract_results(page, name)
         save_to_csv(result)
