@@ -2,7 +2,6 @@ import re
 import csv
 import uuid
 import openpyxl
-import pdfplumber
 from playwright.sync_api import Playwright, sync_playwright
 
 # ── CONFIG ──────────────────────────────────────────────
@@ -74,56 +73,9 @@ def normalize_cover(val):
         return f"{num} Lakh"
     return val
 
-# ── EXTRACT 1ST YEAR PREMIUM FROM PDF ───────────────────
-def extract_pdf_premium(pdf_path):
-    """
-    Reads the Benefit Illustration PDF and returns the
-    'Total Installment Premium' from the row
-    'Installment Premium with first year GST (in Rs.)'
-    in the Premium Summary table.
-    Returns plain numeric string (no commas), e.g. "660".
-    Returns "N/A" if not found.
-    """
-    try:
-        with pdfplumber.open(pdf_path) as pdf:
-            for page in pdf.pages:
-                # ── Try structured table extraction first ──
-                tables = page.extract_tables()
-                for table in tables:
-                    for row in table:
-                        if not row:
-                            continue
-                        row_label = str(row[0]).strip().lower()
-                        if "first year gst" in row_label:
-                            # Last non-empty cell = Total Installment Premium
-                            for cell in reversed(row):
-                                val = str(cell).strip().replace(",", "")
-                                if re.match(r"^\d+(\.\d+)?$", val):
-                                    return val
-
-                # ── Fallback: raw text scan ────────────────
-                text = page.extract_text() or ""
-                lines = text.split("\n")
-                for line in lines:
-                    if "first year gst" in line.lower():
-                        # Grab the last number on this line
-                        numbers = re.findall(r"[\d,]+", line)
-                        if numbers:
-                            return numbers[-1].replace(",", "")
-    except Exception as e:
-        print(f"  ⚠ PDF extraction error: {e}")
-    return "N/A"
-
 # ── SAVE RESULT ──────────────────────────────────────────
 def save_to_csv(row_data):
-    fieldnames = [
-        "Test ID",
-        "Insurer Name",
-        "Equote Number",
-        "Premium (1st Year)",
-        "PDF Premium (1st Year)",
-        "Premium Matched",
-    ]
+    fieldnames = ["Test ID", "Insurer Name", "Equote Number", "Premium (1st Year)"]
     file_exists = True
     try:
         open(OUTPUT_CSV, "r")
@@ -197,9 +149,6 @@ def run_for_user(playwright, user):
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page    = context.new_page()
-
-    # ── Track the downloaded PDF path ───────────────────
-    downloaded_pdf_path = None
 
     try:
         # ── STEP 1: Personal details ────────────────────
@@ -283,56 +232,28 @@ def run_for_user(playwright, user):
         page.wait_for_timeout(500)
         page.get_by_text("Bangalore", exact=True).first.click()
 
-        # ── Download Benefit Illustration & capture PDF ─
-        with page.expect_download() as download_info:
-            page.get_by_text("Download Benefit Illustration").click()
-        download = download_info.value
-        downloaded_pdf_path = download.path()
-        print(f"  ✓ PDF downloaded to: {downloaded_pdf_path}")
-
+        page.get_by_text("Download Benefit Illustration").click()
         page.wait_for_timeout(8000)
         page.get_by_text("Proceed", exact=True).first.click()
         page.wait_for_timeout(5000)
 
-        # ── STEP 4: Extract from page ───────────────────
+        # ── STEP 4: Extract & save ──────────────────────
         result = extract_results(page, name)
-
-        # ── STEP 5: Extract PDF premium & compare ───────
-        pdf_premium = "N/A"
-        premium_matched = "N/A"
-        if downloaded_pdf_path:
-            pdf_premium = extract_pdf_premium(downloaded_pdf_path)
-            if pdf_premium != "N/A" and result["Premium (1st Year)"] != "N/A":
-                # Normalize both to plain integers for comparison
-                try:
-                    page_val = int(float(result["Premium (1st Year)"]))
-                    pdf_val  = int(float(pdf_premium))
-                    premium_matched = "True" if abs(page_val - pdf_val) <= 1 else "False"
-                except ValueError:
-                    premium_matched = "False"
-
-        result["PDF Premium (1st Year)"] = pdf_premium
-        result["Premium Matched"]        = premium_matched
-
         save_to_csv(result)
 
-        print(f"  ✓ Test ID:       {result['Test ID']}")
-        print(f"  ✓ Equote:        {result['Equote Number']}")
-        print(f"  ✓ Page Premium:  ₹{result['Premium (1st Year)']}")
-        print(f"  ✓ PDF Premium:   ₹{pdf_premium}")
-        print(f"  ✓ Matched:       {premium_matched}")
+        print(f"  ✓ Test ID:  {result['Test ID']}")
+        print(f"  ✓ Equote:   {result['Equote Number']}")
+        print(f"  ✓ Premium:  ₹{result['Premium (1st Year)']}")
         print(f"  ✓ Saved to {OUTPUT_CSV}")
 
     except Exception as e:
         print(f"  ✗ ERROR for {name}: {e}")
         # Still save a row so we know it failed
         save_to_csv({
-            "Test ID":               str(uuid.uuid4())[:8].upper(),
-            "Insurer Name":          name,
-            "Equote Number":         "ERROR",
-            "Premium (1st Year)":    str(e)[:60],
-            "PDF Premium (1st Year)": "N/A",
-            "Premium Matched":       "N/A",
+            "Test ID":            str(uuid.uuid4())[:8].upper(),
+            "Insurer Name":       name,
+            "Equote Number":      "ERROR",
+            "Premium (1st Year)": str(e)[:60],
         })
     finally:
         page.wait_for_timeout(2000)
